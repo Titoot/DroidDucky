@@ -1,14 +1,14 @@
 # DroidDucky
 
 ## Abstract
-*DroidDucky* is a [duckyscript](https://github.com/hak5darren/USB-Rubber-Ducky/wiki/Duckyscript) interpreter written in Bash which brings all of ducky scripting goodness to Android.
+*DroidDucky* is a [duckyscript](https://docs.hak5.org/hak5-usb-rubber-ducky/ducky-script-quick-reference) interpreter written in Bash which brings all of ducky scripting goodness to Android.
 
 ## Usage
-In order to use *DroidDucky* you have to have some kind of Android terminal emulator application. Lots of them can be found on the [Play Store](https://play.google.com/store/search?q=terminal%20emulator) (both free and paid). I’m currently using *JuiceSSH*, and I can recommend it. Also, you'll have to have a custom kernel with [android-keyboard-gadget](https://github.com/pelya/android-keyboard-gadget) support.
+In order to use *DroidDucky* you have to have some kind of Android terminal emulator application. Lots of them can be found on the [Play Store](https://play.google.com/store/search?q=terminal%20emulator) (both free and paid). I’m currently using *JuiceSSH*, and I can recommend it. ~Also, you'll have to have a custom kernel with [android-keyboard-gadget](https://github.com/pelya/android-keyboard-gadget) support.~ *not required anymore*
 
 Syntax is quite simple. Just run droidducky.sh with payload file name as the first argument. Make sure that droidducky.sh has execution permission.
 
-    bash droidducky.sh payload.dd
+    sh droidducky.sh payload.dd
 
 ## Example
 You can try the payload code below.
