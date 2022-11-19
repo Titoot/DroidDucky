@@ -1,11 +1,10 @@
-#!/bin/bash
+#!/system/bin/sh
 
 # DroidDucky
 # Simple Duckyscript interpreter in Bash. Based on android-keyboard-gadget and hid-gadget-test utility.
 #
 # Usage: droidducky.sh payload_file.dd
 #
-# Copyright (C) 2015 - Andrej Budinčević <andrew@hotmail.rs>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +25,7 @@ last_cmd=""
 last_string=""
 line_num=0
 
-function convert() 
+convert() 
 {
 	local kbcode=""
 
@@ -133,8 +132,8 @@ function convert()
 	else
 		case $1 in
 		[[:upper:]])
-			tmp=$1
-			kbcode="left-shift ${tmp,,}"
+			tmp=$(echo $1 | tr '[:upper:]' '[:lower:]')
+			kbcode="left-shift ${tmp}"
 			;;
 		*)
 			kbcode="$1"
@@ -153,8 +152,14 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 		last_string="$info"
 		last_cmd="$cmd"
 
-		for ((  i=0; i<${#info}; i++  )); do
-			kbcode=$(convert "${info:$i:1}")
+		for i in $(seq ${#info})
+		do
+			#echo $i
+			#echo $cmd
+			#echo $info
+			#echo $kbcode
+
+			kbcode=$(convert "$(echo $info | awk '{split($0,a,""); print a['${i}']}')")
 
 			if [ "$kbcode" != "" ]
 			then
@@ -174,7 +179,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 
 	elif [ "$cmd" == "WINDOWS" -o "$cmd" == "GUI" ] 
 	then
-		last_cmd="left-meta ${info,,}"
+		last_cmd="left-meta $(echo $info | tr '[:upper:]' '[:lower:]')"
 		echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 
 	elif [ "$cmd" == "MENU" -o "$cmd" == "APP" ] 
@@ -225,7 +230,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 	elif [ "$cmd" == "CAPSLOCK" -o "$cmd" == "DELETE" -o "$cmd" == "END" -o "$cmd" == "HOME" -o "$cmd" == "INSERT" -o "$cmd" == "NUMLOCK" -o "$cmd" == "PAGEUP" -o "$cmd" == "PAGEDOWN" -o "$cmd" == "SCROLLLOCK" -o "$cmd" == "SPACE" -o "$cmd" == "TAB" \
 	-o "$cmd" == "F1" -o "$cmd" == "F2" -o "$cmd" == "F3" -o "$cmd" == "F4" -o "$cmd" == "F5" -o "$cmd" == "F6" -o "$cmd" == "F7" -o "$cmd" == "F8" -o "$cmd" == "F9" -o "$cmd" == "F10" -o "$cmd" == "F11" -o "$cmd" == "F12" ] 
 	then
-		last_cmd="${cmd,,}"
+		last_cmd="$(echo $cmd | tr '[:upper:]' '[:lower:]')"
 		echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 
 	elif [ "$cmd" == "REM" ] 
@@ -236,7 +241,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 	then
 		if [ "$info" == "DELETE" -o "$info" == "END" -o "$info" == "HOME" -o "$info" == "INSERT" -o "$info" == "PAGEUP" -o "$info" == "PAGEDOWN" -o "$info" == "SPACE" -o "$info" == "TAB" ] 
 		then
-			last_cmd="left-shift ${info,,}"
+			last_cmd="left-shift $(echo $info | tr '[:upper:]' '[:lower:]')"
 			echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 
 		elif [ "$info" == *"WINDOWS"* -o "$info" == *"GUI"* ] 
@@ -278,7 +283,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 
 		elif [ "$info" == "F1" -o "$info" == "F2" -o "$info" == "F3" -o "$info" == "F4" -o "$info" == "F5" -o "$info" == "F6" -o "$info" == "F7" -o "$info" == "F8" -o "$info" == "F9" -o "$info" == "F10" -o "$info" == "F11" -o "$info" == "F12" ] 
 		then
-			last_cmd="left-ctrl ${cmd,,}"
+			last_cmd="left-ctrl $(echo $cmd | tr '[:upper:]' '[:lower:]')"
 			echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 
 		elif [ "$info" == "ESC" -o "$info" == "ESCAPE" ] 
@@ -292,7 +297,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 			echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 
 		else 
-			last_cmd="left-ctrl ${info,,}"
+			last_cmd="left-ctrl $(echo $info | tr '[:upper:]' '[:lower:]')"
 			echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 		fi
 
@@ -301,7 +306,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 		if [ "$info" == "END" -o "$info" == "SPACE" -o "$info" == "TAB" \
 		-o "$info" == "F1" -o "$info" == "F2" -o "$info" == "F3" -o "$info" == "F4" -o "$info" == "F5" -o "$info" == "F6" -o "$info" == "F7" -o "$info" == "F8" -o "$info" == "F9" -o "$info" == "F10" -o "$info" == "F11" -o "$info" == "F12" ] 
 		then
-			last_cmd="left-alt ${info,,}"
+			last_cmd="left-alt $(echo $info | tr '[:upper:]' '[:lower:]')"
 			echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 
 		elif [ "$info" == "ESC" -o "$info" == "ESCAPE" ] 
@@ -315,7 +320,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 			echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 
 		else 
-			last_cmd="left-alt ${info,,}"
+			last_cmd="left-alt $(echo $info | tr '[:upper:]' '[:lower:]')"
 			echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 		fi
 
@@ -347,7 +352,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 			echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 
 		else 
-			last_cmd="left-ctrl left-alt ${info,,}"
+			last_cmd="left-ctrl left-alt $(echo $info | tr '[:upper:]' '[:lower:]')"
 			echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 		fi
 
@@ -360,7 +365,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 
 		elif [ "$info" == "END" -o "$info" == "SPACE" -o "$info" == "TAB" -o "$info" == "DELETE" -o "$info" == "F1" -o "$info" == "F2" -o "$info" == "F3" -o "$info" == "F4" -o "$info" == "F5" -o "$info" == "F6" -o "$info" == "F7" -o "$info" == "F8" -o "$info" == "F9" -o "$info" == "F10" -o "$info" == "F11" -o "$info" == "F12" ] 
 		then
-			last_cmd="left-ctrl left-shift ${cmd,,}"
+			last_cmd="left-ctrl left-shift $(echo $cmd | tr '[:upper:]' '[:lower:]')"
 			echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 
 		elif [ "$info" == "ESC" -o "$info" == "ESCAPE" ] 
@@ -374,7 +379,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 			echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 
 		else 
-			last_cmd="left-ctrl left-shift ${info,,}"
+			last_cmd="left-ctrl left-shift $(echo $info | tr '[:upper:]' '[:lower:]')"
 			echo "$last_cmd" | ./hid-gadget-test $kb > /dev/null
 		fi
 
@@ -384,11 +389,13 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 		then
 			echo "($line_num) Parse error: Using REPEAT with DELAY, DEFAULTDELAY or BLANK is not allowed."
 		else
-			for ((  i=0; i<$info; i++  )); do
+			for i in $(seq $info)
+			do
 				if [ "$last_cmd" == "STRING" ] 
 				then
-					for ((  j=0; j<${#last_string}; j++  )); do
-						kbcode=$(convert "${last_string:$j:1}")
+					for j in $(seq ${#last_string})
+					do
+						kbcode=$(convert "$(echo $last_string | awk '{split($0,a,""); print a['${j}']}')")
 
 						if [ "$kbcode" != "" ]
 						then
