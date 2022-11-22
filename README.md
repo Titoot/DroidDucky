@@ -6,6 +6,8 @@
 ## Usage
 In order to use *DroidDucky* you have to have some kind of Android terminal emulator application. Lots of them can be found on the [Play Store](https://play.google.com/store/search?q=terminal%20emulator) (both free and paid). I’m currently using *JuiceSSH*, and I can recommend it. ~Also, you'll have to have a custom kernel with [android-keyboard-gadget](https://github.com/pelya/android-keyboard-gadget) support.~ *not required anymore*
 
+You might need to install [BusyBox](https://github.com/SmartPack/BusyBox-Installer) becuase it's not 100% POSIX Shell, it doesn't even have arrays! 
+
 Syntax is quite simple. Just run droidducky.sh with payload file name as the first argument. Make sure that droidducky.sh has execution permission.
 
     sh droidducky.sh payload.dd
