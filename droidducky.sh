@@ -155,10 +155,6 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 
 		for i in $(seq ${#info})
 		do
-			#echo $i
-			#echo $cmd
-			#echo $kbcode
-
 
 			kbcode=$(convert "$(echo $info | awk '{print substr($0,'${i}',1)}')")
 			echo $kbcode
