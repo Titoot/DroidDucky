@@ -157,11 +157,11 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 		do
 			#echo $i
 			#echo $cmd
-			#echo $info
 			#echo $kbcode
 
-			kbcode=$(convert "$(echo $info | awk '{split($0,a,""); print a['${i}']}')")
 
+			kbcode=$(convert "$(echo $info | awk '{print substr($0,'${i}',1)}')")
+			echo $kbcode
 			if [ "$kbcode" != "" ]
 			then
 				echo "$kbcode" | ./hid-gadget-test $kb > /dev/null
@@ -396,7 +396,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
 				then
 					for j in $(seq ${#last_string})
 					do
-						kbcode=$(convert "$(echo $last_string | awk '{split($0,a,""); print a['${j}']}')")
+						kbcode=$(convert "$(echo $last_string | awk '{print substr($0,'${j}',1)}')")
 
 						if [ "$kbcode" != "" ]
 						then
